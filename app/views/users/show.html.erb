@@ -3,53 +3,65 @@
   <div class='container px-5 px-sm-0'>
     <div class='row'>
       <div class='col-md-3'>
+        
+   <% if @anime.errors.any? %>
+    <div class= "errors">
+      <div class="errors-head"><%= @anime.errors.count %>errors prohibited this post from being saved:</div>
+      <% @anime.errors.full_messages.each do |message| %>
+        <div class= "errors-content">
+          <ul>
+            <li class="errors-text"><%= message %></li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+   <% end %>
+        
         <h2>User info</h2>
         <table class='table'>
           <tr>
-            <%= image_tag 'default-image.jpg' %>
+            <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, fallback: "default-image.jpg" %>
           </tr>
           <tr>
             <th>name</th>
-            <th>DMM太郎</th>
+            <th><%= @user.name %></th>
           </tr>
           <tr>
             <th>introduction</th>
-            <th></th>
+            <th><%= @user.introduction %></th>
           </tr>
         </table>　 
-        <div class='row'>
-          <a class="btn btn-outline-secondary btn-block" href="/users/1/edit">
+       <div class='row'>
+          <%= link_to edit_user_path(@user.id), class: "btn btn-outline-secondary btn-block" do %>
             <i class="fas fa-user-cog"></i>
-          </a>
+          <% end %>
         </div>
-        <h2 class="mt-3">New Anime</h2>
-        <form action="/books" accept-charset="UTF-8" method="post">
-          <input type="hidden" name="authenticity_token" value="euanJm1ZnqPSafYMeiMeLp0kaGQ8zlC8Tb6fDfS5TUDo5c3F1yLum7coItykOTPY4kX6sjIEQ5oLIaYwHZTIyQ" autocomplete="off" />
-          <div class="form-group">
-            <label for="book_title">Title</label>
-            <input class="form-control" type="text" name="book[title]" id="book_title" />
-          </div>
-          <div class="form-group">
-            <label for="book_body">Opinion</label>
-            <textarea class="form-control" name="book[body]" id="book_body"></textarea>
-          </div>
-          <div class="form-group">
-            <input type="submit" name="commit" value="Create Book" class="btn btn-success" data-disable-with="Create Book" />
-          </div>
-        </form>
+
       </div>
+      
+       
       <div class='col-md-8 offset-md-1'>
+        <h2>post detail</h2>
         <table class='table table-hover table-inverse'>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Title</th>
-              <th>Opinion</th>
-              <th colspan="3"></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr> 
+            <td>
+            <td><%= link_to user_path(@user.id) do %>
+            <%= image_tag 'default-image.jpg' %>
+        　　<% end %>
+            <%= link_to @anime.user.name, user_path(@user.id) %>
+             </td>
+             <td><%= link_to @anime.title, book_path%></td>
+             <td><%= @anime.body %></td>
+            <% if @anime.user_id == current_user.id %>
+            <td><%= link_to 'Edit', edit_anime_path(@anime.id)%></td>
+            <td><%= link_to 'Destroy', anime_path(@anime.id), method: :delete, data: { confirm: '本当に削除しますか?' } %></td>
+            <% end %>
+           </tr>
+          </tbody>
         </table>
+      </div>
+      
       </div>
     </div>
   </div>

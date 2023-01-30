@@ -1,5 +1,6 @@
 class AnimesController < ApplicationController
   def index
+    @anime = Anime.find(params[:id])
     @animes = Anime.all
     @user = current_user
   end
@@ -9,8 +10,8 @@ class AnimesController < ApplicationController
   end
   
   def show
-    @animes = Book.all
-    @anime = Book.find(params[:id])
+    @animes = Anime.all
+    @anime = Anime.find(params[:id])
     @user = @anime.user
   end
 
@@ -18,7 +19,7 @@ class AnimesController < ApplicationController
   def create
     @animes = Anime.all
     @anime = current_user
-    @anime = Anime.new(book_params)
+    @anime = Anime.new(anime_params)
     @anime.user_id = @anime.id  
     if @anime.save
       flash[:notice] = "Successfully created."

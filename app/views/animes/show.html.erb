@@ -1,2 +1,66 @@
-<h1>Animes#show</h1>
-<p>Find me in app/views/animes/show.html.erb</p>
+<main>
+  <p id="notice"><%= flash[:notice] %></p>
+  <div class='container px-5 px-sm-0'>
+    <div class='row'>
+      <div class='col-md-3'>
+        
+   <% if @anime.errors.any? %>
+    <div class= "errors">
+      <div class="errors-head"><%= @anime.errors.count %>errors prohibited this post from being saved:</div>
+      <% @anime.errors.full_messages.each do |message| %>
+        <div class= "errors-content">
+          <ul>
+            <li class="errors-text"><%= message %></li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+   <% end %>
+        
+        <h2>User info</h2>
+        <table class='table'>
+          <tr>
+            <%= attachment_image_tag @user, :profile_image, :fill, 60, 60, fallback: "default-image.jpg" %>
+          </tr>
+          <tr>
+            <th>name</th>
+            <th><%= @user.name %></th>
+          </tr>
+          <tr>
+            <th>introduction</th>
+            <th><%= @user.introduction %></th>
+          </tr>
+        </table>　 
+       <div class='row'>
+          <%= link_to edit_user_path(@user.id), class: "btn btn-outline-secondary btn-block" do %>
+            <i class="fas fa-user-cog"></i>
+          <% end %>
+        </div>
+      </div>
+      
+       
+      <div class='col-md-8 offset-md-1'>
+        <table class='table table-hover table-inverse'>
+          <tbody>
+            <tr> 
+            <td>
+            <td><%= link_to user_path(@user.id) do %>
+            <%= image_tag 'default-image.jpg' %>
+        　　<% end %>
+            <%= link_to @anime.user.name, user_path(@user.id) %>
+             </td>
+             <td><%= link_to @anime.title, anime_path%></td>
+             <td><%= @anime.body %></td>
+            <% if @anime.user_id == current_user.id %>
+            <td><%= link_to 'Edit', edit_anime_path(@anime.id)%></td>
+            <td><%= link_to 'Destroy', anime_path(@anime.id), method: :delete, data: { confirm: '本当に削除しますか?' } %></td>
+            <% end %>
+           </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      </div>
+    </div>
+  </div>
+</main>
